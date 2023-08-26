@@ -15,14 +15,14 @@ stages {
     stage('Backup Jenkins'){
       steps {
         container('awscli'){
-          withVault([configuration: configuration, vaultSecrets: secrets]){
+         withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
             sh '''
               echo 'Install kubectl'
               curl -LO "https://storage.googleapis.com/kubernetes-release/release/\$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
               chmod +x ./kubectl
               mv ./kubectl /usr/local/bin/kubectl
 function get_jenkins_pod_id {
-                kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name | grep jenkins-
+              kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name | grep jenkins-
               }
   
               echo 'Create jenkins backup'
