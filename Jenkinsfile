@@ -34,6 +34,8 @@ stages {
               secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
                 sh 'aws --version'
                 sh 'aws s3 ls'
+                sh 'aws s3 cp s3://dx-cf-bucket/application.yml .'
+                sh 'ls -ltr'
                 sh 'echo "touch .."'
                 sh 'touch jenkins_backup.txt'
                 sh 'echo "cp .."'
