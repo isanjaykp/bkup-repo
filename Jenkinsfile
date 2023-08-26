@@ -35,6 +35,7 @@ stages {
                 sh 'aws --version'
                 sh 'aws s3 ls'
                 sh 'aws s3 cp s3://dx-cf-bucket/application.yml .'
+                sh 'aws s3 cp README.md s3://dx-cf-bucket/README.md'
                 sh 'ls -ltr'
                 sh 'echo "touch .."'
                 sh 'touch jenkins_backup.txt'
