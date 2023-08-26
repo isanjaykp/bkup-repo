@@ -44,8 +44,11 @@ function get_jenkins_pod_id {
               }
   
               echo 'Create jenkins backup'
-
-              tar -zcvf jenkins_backup/jenkins_backup.tar.gz jenkins_backup/jenkins_home'
+              kubectl exec jenkins-56d7bdc768-7mffc -- bash -c 'cd /var; \
+                rm -rf jenkins_backup; \
+                mkdir -p jenkins_backup; \ 
+                cp -r jenkins_home jenkins_backup/jenkins_home; \
+                tar -zcvf jenkins_backup/jenkins_backup.tar.gz jenkins_backup/jenkins_home'
               
               cd && kubectl cp jenkins/jenkins-56d7bdc768-7mffc:/var/jenkins_backup/jenkins_backup.tar.gz jenkins_backup.tar.gz
               
