@@ -17,6 +17,7 @@ stages {
         container('awscli'){
 
                 sh 'aws --version'
+                sh 'aws s3 ls'
           
         }
       }
