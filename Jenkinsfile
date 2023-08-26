@@ -34,6 +34,11 @@ stages {
               secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
                 sh 'aws --version'
                 sh 'aws s3 ls'
+                sh 'echo "touch .."'
+                sh 'touch jenkins_backup.txt'
+                sh 'echo "cp .."'
+                sh 'aws s3 cp jenkins_backup.txt s3://jdx-devops-backup/$(date +%Y%m%d%H%M)/jenkins_backup.txt'
+                sh 'echo "done .."'
                 sh '''
               echo 'Install kubectl'
               curl -LO "https://storage.googleapis.com/kubernetes-release/release/\$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
