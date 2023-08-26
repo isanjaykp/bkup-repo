@@ -42,13 +42,12 @@ stages {
 
               echo 'Create jenkins backup'
               
-              touuch jenkins_backup.tar.gz
+              touch jenkins_backup.txt
               echo 'Upload jenkins_backup.tar to S3 bucket'
-              aws s3 cp jenkins_backup.tar.gz s3://jenkins-backups/$(date +%Y%m%d%H%M)/jenkins_backup.tar.gz
+              aws s3 cp jenkins_backup.tar.gz s3://jenkins-backups/$(date +%Y%m%d%H%M)/jenkins_backup.txt
            
               echo 'Remove files after succesful upload to S3'
-              kubectl exec $(get_jenkins_pod_id) -- bash -c 'rm -rf /var/jenkins_backup'
-            '''
+              '''
               }
           
         }
