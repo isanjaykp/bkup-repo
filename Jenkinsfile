@@ -39,12 +39,8 @@ stages {
               curl -LO "https://storage.googleapis.com/kubernetes-release/release/\$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
               chmod +x ./kubectl
               mv ./kubectl /usr/local/bin/kubectl
-function get_jenkins_pod_id {
-                kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name | grep jenkins-
-              }
-  
+
               echo 'Create jenkins backup'
-              kubectl exec jenkins-56d7bdc768-7mffc -- bash -c 'cd /var; rm -rf jenkins_backup; mkdir -p jenkins_backup; cp -r jenkins_home jenkins_backup/jenkins_home; tar -zcvf jenkins_backup/jenkins_backup.tar.gz jenkins_backup/jenkins_home'
               
               touuch jenkins_backup.tar.gz
               echo 'Upload jenkins_backup.tar to S3 bucket'
