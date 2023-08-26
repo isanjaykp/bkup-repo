@@ -15,7 +15,7 @@ stages {
     stage('Backup Jenkins'){
       steps {
         container('awscli'){
-          sh 'aws s3 ls'
+          sh 'sudo aws s3 ls'
         }
       }
     }
