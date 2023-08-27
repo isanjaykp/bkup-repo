@@ -3,7 +3,7 @@ pipeline {
     kubernetes {
       label 'jenkins-backup-job'
       defaultContainer 'jnlp'
-      yamlFile 'k8s/build-pod.yaml'
+      yamlFile 'k8s/k8sPodTemplate.yaml'
     }
   }
 parameters {
