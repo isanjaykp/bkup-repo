@@ -48,7 +48,11 @@ stages {
               aws s3 cp jenkins_backup.txt s3://dx-devops-backup/$(date +%Y%m%d%H%M)/jenkins_backup.txt
            
               echo 'Remove files after succesful upload to S3'
-              kubectl exec  jenkins-56d7bdc768-8v98w -- bash -c 'cd /var; ls -ltr ;rm -rf jenkins_backup; mkdir -p jenkins_backup; cp -r jenkins_home jenkins_backup/jenkins_home; tar -zcvf jenkins_backup/jenkins_backup.tar.gz jenkins_backup/jenkins_home'
+              function get_jenkins_pod_id {
+                kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name | grep jenkins-
+              }
+  
+              kubectl exec  $(get_jenkins_pod_id) -- bash -c 'cd /var; ls -ltr ;rm -rf jenkins_backup; mkdir -p jenkins_backup; cp -r jenkins_home jenkins_backup/jenkins_home; tar -zcvf jenkins_backup/jenkins_backup.tar.gz jenkins_backup/jenkins_home'
               '''
               }
           
