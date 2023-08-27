@@ -11,7 +11,7 @@ parameters {
     choice(
       name: 'REGION',
       choices: [
-          ' ',
+          'us-east-1',
           'us-east-1',
           'us-east-2'
           ],
@@ -26,7 +26,7 @@ parameters {
 stages {
     stage('Backup Jenkins'){
       steps {
-        container('jenkins-agent'){
+        container('jenkins-awscli-agent'){
             withCredentials([[
               $class: 'AmazonWebServicesCredentialsBinding',
               credentialsId: "${CFN_CREDENTIALS_ID}",
