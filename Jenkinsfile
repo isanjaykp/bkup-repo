@@ -49,7 +49,7 @@ stages {
            
               echo 'Remove files after succesful upload to S3'
               function get_jenkins_pod_id {
-                kubectl get pods -n default -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name | grep jenkins-
+                kubectl get pods -n default -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name
               }
   
               kubectl exec  $(get_jenkins_pod_id) -- bash -c 'cd /var; ls -ltr ;rm -rf jenkins_backup; mkdir -p jenkins_backup; cp -r jenkins_home jenkins_backup/jenkins_home; tar -zcvf jenkins_backup/jenkins_backup.tar.gz jenkins_backup/jenkins_home'
