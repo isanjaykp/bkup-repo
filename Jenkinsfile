@@ -42,18 +42,20 @@ stages {
               mv ./kubectl /usr/local/bin/kubectl
 
               echo 'Create jenkins backup'
-              
-              touch jenkins_backup.txt
-              echo 'Upload jenkins_backup.txt to S3 bucket'
-              aws s3 cp jenkins_backup.txt s3://dx-devops-backup/$(date +%Y%m%d%H%M)/jenkins_backup.txt
-           
-              echo 'Remove files after succesful upload to S3'
-              kubectl get pods -A
+
               function get_jenkins_pod_id {
                 kubectl get pods -n default -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name | grep jenkins-
               }
   
               kubectl exec  $(get_jenkins_pod_id) -- bash -c 'cd /var; ls -ltr ;rm -rf /tmp/jenkins_backup; mkdir -p /tmp/jenkins_backup; cp -r jenkins_home /tmp/jenkins_backup/jenkins_home; tar -zcvf /tmp/jenkins_backup/jenkins_backup.tar.gz /tmp/jenkins_backup/jenkins_home'
+              
+              cd && kubectl cp default/$(get_jenkins_pod_id):/tmp/jenkins_backup/jenkins_backup.tar.gz jenkins_backup.tar.gz
+              
+              echo 'Upload jenkins_backup.tar to S3 bucket'
+              aws s3 cp jenkins_backup.tar.gz s3://dx-devops-backup/$(date +%Y%m%d%H%M)/jenkins_backup.tar.gz
+                         
+              echo 'Remove files after succesful upload to S3'
+              kubectl exec $(get_jenkins_pod_id) -- bash -c 'rm -rf /tmp/jenkins_backup'
               '''
               }
           
