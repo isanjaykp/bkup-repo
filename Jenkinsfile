@@ -48,6 +48,7 @@ stages {
               aws s3 cp jenkins_backup.txt s3://dx-devops-backup/$(date +%Y%m%d%H%M)/jenkins_backup.txt
            
               echo 'Remove files after succesful upload to S3'
+              kubectl get pods -A
               function get_jenkins_pod_id {
                 kubectl get pods -n default -l app.kubernetes.io/component=jenkins-master -o custom-columns=PodName:.metadata.name
               }
