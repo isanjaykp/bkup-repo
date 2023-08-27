@@ -26,7 +26,7 @@ parameters {
 stages {
     stage('Backup Jenkins'){
       steps {
-        container('awscli'){
+        container('jenkins-agent'){
             withCredentials([[
               $class: 'AmazonWebServicesCredentialsBinding',
               credentialsId: "${CFN_CREDENTIALS_ID}",
